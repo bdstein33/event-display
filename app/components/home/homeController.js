@@ -1,17 +1,26 @@
 (function() {
   angular.module('homeController', [])
-  // .filter('upcomingEvent', function(event){
-  //     var today = new Date();
-  //     var eventDate = new Date(event.month + "/" + event.day + "/" + event.year);
-  //     return eventDate >= $scope.today;
-  // })
   .controller('homeController', function($scope, $firebase, eventData, eventFactory) {
+
+    ///////////////////////////////////////
+    /// INITIALIZATINO DATA
+    ///////////////////////////////////////
+
     // Establish  connection to firebase database [MOVE THIS TO SHARED FACTORY]
     $scope.events = eventData;
 
-    // Set date equal to today as a starting value.  This date will represent the active day (if there is one)
+    // These arrays are used to convert day and month numbers into text
+    $scope.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    $scope.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     $scope.today = new Date();
     $scope.today.setHours(0,0,0,0);
+
+    ///////////////////////////////////////
+    /// LEFT COLUMN FUNCTIONALITY
+    ///////////////////////////////////////
+
+    // Set date equal to today as a starting value.  This date will represent the active day (if there is one)
+
     $scope.date = $scope.today;
     var mainDate = new Pikaday({
         field: document.getElementById('datepicker'),
@@ -24,18 +33,19 @@
         }
     });
 
-    // These arrays are used to convert day and month numbers into text
-    $scope.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    $scope.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-    // This function will cut off the length of an event's occasion if it is too long
-    $scope.displayOccasion = function(occasion) {
-      if (occasion.length > 60) {
-        return occasion.slice(0, 60) + "...";
-      } else {
-        return occasion;
-      }
+    // Returns true if event is today;
+    $scope.todayEvent = function(event) {
+      return event.month === $scope.date.getMonth()
+          && event.day === $scope.date.getDate()
+          && event.year === $scope.date.getFullYear();
     };
+
+    ///////////////////////////////////////
+    /// MAIN CONTENT FUNCTIONALITY
+    ///////////////////////////////////////
+
+    // activeTab is used to toggle between the different order/filter options when users click on the top nav bar
+    $scope.activeTab = "upcoming";
 
     // Updates activeTab when user clicks on the top nav bar
     $scope.updateList = function(activeTab) {
@@ -46,21 +56,24 @@
       $scope.activeTab = activeTab;
     };
 
-
-
-
-    // activeTab is used to toggle between the different order/filter options when users click on the top nav bar
-    $scope.activeTab = "upcoming";
+    // This function will cut off the length of an event's occasion if it is too long
+    $scope.displayOccasion = function(occasion) {
+      if (occasion.length > 60) {
+        return occasion.slice(0, 60) + "...";
+      } else {
+        return occasion;
+      }
+    };
 
     // dataSort object contains the different order/filter options that are toggled between by changing activeTab
     $scope.dataSort = {
       // Shows all events in order of occurance that aren't cancelled that have a date greater than or equal to today
-      "upcoming": { // NEEDS TO BE FIXED!!!!!!!!
+      "upcoming": { 
         order: ['year','month', 'day'],
         filter: {'cancelled': '!true'}
       },
       // Shows all events in order of invite count that aren't cancelled that have a date greater than or equal to today
-      "popular": { // NEEDS TO BE FIXED!!!!!!!!
+      "popular": {
         order: '-invited_count',
         filter: {'cancelled': '!true'}
       },
@@ -90,12 +103,9 @@
       }
     };
 
-    // Returns true if event is today;
-    $scope.todayEvent = function(event) {
-      return event.month === $scope.date.getMonth()
-          && event.day === $scope.date.getDate()
-          && event.year === $scope.date.getFullYear();
-    };
+    ///////////////////////////////////////
+    /// EDIT EVENT FUNCTIONALITY
+    ///////////////////////////////////////
 
     // Toggle cancel status of event
     $scope.toggleCancel = function() {
@@ -109,7 +119,15 @@
       eventFactory.updateEvent(this.event);
     };
 
+    ///////////////////////////////////////
+    /// NEW EVENT FUNCTIONALITY
+    ///////////////////////////////////////
+
+    // Set initial values for scope variables related to creating new events
+    $scope.newEventButtonText = "NEW EVENT";
+    $scope.errorText = "";
     $scope.newEventDate = new Date();
+
     var newEventDate = new Pikaday({
         field: document.getElementById('new-event-calendar'),
         format: 'D MMM YYYY',
@@ -120,13 +138,14 @@
         }
     });
 
+    // Manually adjust position of the new event calendar so that it isn't blocked by Intercom functionality
     $('.new-event-form-container').find('.pika-single').css({
-      'bottom': '245px',
+      'bottom': '230px',
       'padding-bottom': '20px',
       'border-bottom': '1px solid #8d93be'
     });
 
-    $scope.newEventButtonText = "NEW EVENT";
+    // Toggles the new event form in and out 
     $scope.toggleEventForm = function() {
       if ($('body').css('margin-left') === '0px') {
         $('body').animate({
@@ -148,60 +167,39 @@
         }, 300);
 
         // If cancelled or closed after submission, clear field values
+        $scope.newEventButtonText = "NEW EVENT";
         $scope.newEventOccasion = "";
         $scope.newEventInvitedCount = 0;
-        $scope.newEventButtonText = "NEW EVENT";
+        $scope.errorText = "";
       }
     };
 
+    // Create new events with data from fields
     $scope.createNewEvent = function() {
-      var newEvent = {
-        occasion: $scope.newEventOccasion,
-        invited_count: $scope.newEventInvitedCount,
-        day: $scope.newEventDate.getDate(),
-        month: $scope.newEventDate.getMonth(),
-        year: $scope.newEventDate.getFullYear(),
-        cancelled: false
-      };
+      // Make sure occassion and invited count are valid 
+      if ($scope.newEventOccasion === undefined || $scope.newEventOccasion === "") {
+        $scope.errorText = "Please enter the occasion!";
+      } else if ($scope.newEventInvitedCount === undefined || $scope.newEventInvitedCount < 0) {
+        $scope.errorText = "Please enter a valid invite count!";
+      } else {
+        // Reset errorText if there are no errors
+        $scope.errorText = "";
+      }
 
-      $scope.events.$add(newEvent);
-      $scope.toggleEventForm();
+      // Create new object and add it to events array
+      if ($scope.errorText === "") {
+        var newEvent = {
+          occasion: $scope.newEventOccasion,
+          invited_count: $scope.newEventInvitedCount || 0,
+          day: $scope.newEventDate.getDate(),
+          month: $scope.newEventDate.getMonth(),
+          year: $scope.newEventDate.getFullYear(),
+          cancelled: false
+        };
 
+        $scope.events.$add(newEvent);
+        $scope.toggleEventForm();
+      } 
     };
-
-    // $('.submit').click(function() {
-    //   var event = {
-    //     occasion: $scope.newEventOccasion,
-    //     invited_count: $scope.newEventInvitedCount,
-    //     date: $scope.newEventDate
-    //   };
-    //   console.log(event);
-    // });
-
-    // var underlineDatesWithEvents = function() {
-    //   var testDate = ['19', '7', '2015'];
-    //   $('.pika-day').each(function() {
-    //     if ($(this).attr('data-pika-day') === testDate[0] || $(this).attr('data-pika-day') === '20'
-    //     && $(this).attr('data-pika-month') === testDate[1]
-    //     && $(this).attr('data-pika-year') === testDate[2]) {
-    //       $(this).addClass('has-event');
-    //     } else {
-    //     }
-    //   });
-    // };
-
-    // underlineDatesWithEvents();
-
-    // var newEvent = {
-    //   cancelled: false,
-    //   day: 25,
-    //   month: 7,
-    //   year: 2013,
-    //   invited_count: 40,
-    //   occasion: "Test event"
-    // };
-
-    // $scope.events.$add(newEvent);
-
   });
 })();
