@@ -1,22 +1,23 @@
 (function() {
   angular.module('eventFactory', ['firebaseRef'])
-  .factory('eventFactory', function($http, $state, firebaseRef, $firebaseArray) {
+  .factory('eventFactory', function($http, $state, firebaseRef, $firebaseArray, $firebaseObject) {
     var events = $firebaseArray(firebaseRef.child('events'));
 
     return {
       getEvents: function() {
         return events;
       },
-      getEvent: function(eventId) {
-      },
       addEvent: function() {
 
       },
-      removeEvent: function(eventId) {
-
-      },
-      updateEvent: function(eventId) {
-
+      updateEvent: function(eventData) {
+        var eventObj =  $firebaseObject(firebaseRef.child('events').child(eventData.$id))
+        eventObj.$loaded(function() {
+          for (var key in eventData) {
+            eventObj[key] = eventData[key];
+          }
+          eventObj.$save();
+        })
       }
     };
   });

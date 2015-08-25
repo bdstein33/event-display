@@ -1,10 +1,11 @@
 <div class="left-container">
-<!--   <div class="left-container-top">
-    
-  </div> -->
   <h1 class="header left-week-day">{{days[date.getDay()]}}</h1>
   <h1 class="header left-month-day">{{date.getDate()}} {{months[date.getMonth()]}}</h1>
   <div id="datepicker"></div>
+  <p class="sub-header">EVENTS ON THIS DAY</p>
+  <div class="today-events-container">
+    <!-- <p class="today-event">{{test}}</p> -->
+  </div>
 </div>
 <div class="main-container">
   <div class="top-bar">
@@ -23,7 +24,7 @@
     <div class="new-event-button right">NEW EVENT</div>
   </div>
   <div class="event-container">
-    <div ng-repeat="event in events | orderBy : dataSort[activeTab].order | filter: dataSort[activeTab].filter" class="event">
+    <div ng-repeat="event in events | orderBy : dataSort[activeTab].order | filter: dataSort[activeTab].filter | filter: dateFilter" class="event">
       <div class="event-date-div">
         <div class="event-month-box">
           <p class="event-month">{{months[event.month]}}</p>
@@ -33,7 +34,12 @@
       </div>
       <div class="event-content">
         <p class="event-occasion">{{displayOccasion(event.occasion)}}</p>
-        <p>{{event.invited_count}} People Invited</p>
+        <p class="event-invited">{{event.invited_count}} People Invited</p>
+        <div class="event-button-container">
+          <div class="event-button invite-button" ng-click="addInvite()">Invite</div>
+          <div class="event-button cancel-button" ng-hide="{{event.cancelled}}" ng-click="toggleCancel()">Cancel</div>
+          <div class="event-button undo-button" ng-show="{{event.cancelled}}" ng-click="toggleCancel()">Undo Cancel</div>
+        </div>
       </div>
     </div>
   </div>
