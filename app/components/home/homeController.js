@@ -201,5 +201,10 @@
         $scope.toggleEventForm();
       } 
     };
+
+    // Remove popups when clicked
+    $('.popup').on('click', function() {
+      $(this).remove();
+    });
   });
 })();

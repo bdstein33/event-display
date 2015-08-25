@@ -46,15 +46,16 @@
   }
 
   function run($rootScope, $state, $location) {
-    window.Intercom('boot', {
-       app_id: 'yb37ygtj',
-       email: 'john@smith.com',
-       user_id: 'abc123',
-       created_at: 1234567890,
-       widget: {
-          activator: '#IntercomDefaultWidget'
-       }  
-    });
+    // var email = prompt("What's your email?");
+    // window.Intercom('boot', {
+    //    app_id: 'yb37ygtj',
+    //    email: email,
+    //    user_id: email,
+    //    created_at: new Date(),
+    //    widget: {
+    //       activator: '#IntercomDefaultWidget'
+    //    }  
+    // });
 
     // window.Intercom('update');
     
