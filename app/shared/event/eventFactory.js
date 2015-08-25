@@ -11,13 +11,17 @@
 
       },
       updateEvent: function(eventData) {
-        var eventObj =  $firebaseObject(firebaseRef.child('events').child(eventData.$id))
+        // Get event from Firebase based on event id
+        var eventObj =  $firebaseObject(firebaseRef.child('events').child(eventData.$id));
         eventObj.$loaded(function() {
+          // Update values in Firebase with new values based on user change
           for (var key in eventData) {
             eventObj[key] = eventData[key];
           }
+
+          // Save event so the changes persist
           eventObj.$save();
-        })
+        });
       }
     };
   });

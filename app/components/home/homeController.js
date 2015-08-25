@@ -11,6 +11,7 @@
 
     // Set date equal to today as a starting value.  This date will represent the active day (if there is one)
     $scope.today = new Date();
+    $scope.today.setHours(0,0,0,0);
     $scope.date = $scope.today;
     var picker = new Pikaday({
         field: document.getElementById('datepicker'),
@@ -38,6 +39,10 @@
 
     // Updates activeTab when user clicks on the top nav bar
     $scope.updateList = function(activeTab) {
+      // Adjusts the active class 
+      $('.active').removeClass('active');
+      $('.' + activeTab).addClass('active');
+
       $scope.activeTab = activeTab;
     };
 
@@ -74,14 +79,22 @@
     // This is a filter used to determine which events should be shown 
     $scope.dateFilter = function(event) {
       if ($scope.activeTab === "upcoming") {
-        var eventDate = new Date(event.month + "/" + event.day + "/" + event.year);
+        // Add one to month to account for the fact that we store months starting at 0
+        var eventDate = new Date(event.month + 1 + "/" + event.day + "/" + event.year);
         return eventDate >= $scope.today;
       } else if ($scope.activeTab === "completed") {
-        var eventDate = new Date(event.month + "/" + event.day + "/" + event.year);
+        var eventDate = new Date(event.month + 1 + "/" + event.day + "/" + event.year);
         return eventDate < $scope.today;
       } else {
         return true;
       }
+    };
+
+    // Returns true if event is today;
+    $scope.todayEvent = function(event) {
+      return event.month === $scope.date.getMonth()
+          && event.day === $scope.date.getDate()
+          && event.year === $scope.date.getFullYear();
     };
 
     // Toggle cancel status of event
@@ -97,11 +110,6 @@
     };
 
 
-
-    $('body').on('click', '.top-bar-link', function() {
-      $('.active').removeClass('active');
-      $(this).addClass('active');
-    });
 
     // var underlineDatesWithEvents = function() {
     //   var testDate = ['19', '7', '2015'];
@@ -119,10 +127,10 @@
 
     // var newEvent = {
     //   cancelled: false,
-    //   day: 5,
-    //   month: 9,
-    //   year: 2015,
-    //   invited_count: 20,
+    //   day: 25,
+    //   month: 7,
+    //   year: 2013,
+    //   invited_count: 40,
     //   occasion: "Test event"
     // };
 

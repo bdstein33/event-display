@@ -1,24 +1,28 @@
 <div class="left-container">
   <h1 class="header left-week-day">{{days[date.getDay()]}}</h1>
   <h1 class="header left-month-day">{{date.getDate()}} {{months[date.getMonth()]}}</h1>
-  <div id="datepicker"></div>
   <p class="sub-header">EVENTS ON THIS DAY</p>
   <div class="today-events-container">
-    <!-- <p class="today-event">{{test}}</p> -->
+    <p class="today-event" ng-repeat="event in events | filter: {'cancelled': '!true'} | filter: todayEvent">{{event.occasion}}</p>
   </div>
+  
+
+  <div id="datepicker"></div>
+  
+
 </div>
 <div class="main-container">
   <div class="top-bar">
-    <div class="top-bar-link left active" ng-click="updateList('upcoming')">
+    <div class="top-bar-link left upcoming active" ng-click="updateList('upcoming')">
       Upcoming
     </div>
-    <div class="top-bar-link left" ng-click="updateList('popular')">
+    <div class="top-bar-link popular left" ng-click="updateList('popular')">
       Popular
     </div>
-    <div class="top-bar-link left" ng-click="updateList('completed')">
+    <div class="top-bar-link completed left" ng-click="updateList('completed')">
       Completed
     </div>
-    <div class="top-bar-link left" ng-click="updateList('cancelled')">
+    <div class="top-bar-link cancelled left" ng-click="updateList('cancelled')">
       Cancelled
     </div>
     <div class="new-event-button right">NEW EVENT</div>
