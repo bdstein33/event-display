@@ -13,7 +13,7 @@
     $scope.today = new Date();
     $scope.today.setHours(0,0,0,0);
     $scope.date = $scope.today;
-    var picker = new Pikaday({
+    var mainDate = new Pikaday({
         field: document.getElementById('datepicker'),
         format: 'D MMM YYYY',
         bound: false,
@@ -109,7 +109,74 @@
       eventFactory.updateEvent(this.event);
     };
 
+    $scope.newEventDate = new Date();
+    var newEventDate = new Pikaday({
+        field: document.getElementById('new-event-calendar'),
+        format: 'D MMM YYYY',
+        bound: false,
+        onSelect: function() {
+          // When a new date is selected on the calendar, update the active date
+          $scope.newEventDate = this._d;
+        }
+    });
 
+    $('.new-event-form-container').find('.pika-single').css({
+      'bottom': '245px',
+      'padding-bottom': '20px',
+      'border-bottom': '1px solid #8d93be'
+    });
+
+    $scope.newEventButtonText = "NEW EVENT";
+    $scope.toggleEventForm = function() {
+      if ($('body').css('margin-left') === '0px') {
+        $('body').animate({
+          'margin-left': '-320px'
+        }, 300);
+
+
+        $('.new-event-form-container').animate({
+          'right': '0px'
+        }, 300);
+        $scope.newEventButtonText = "CANCEL";
+      } else {
+        $('body').animate({
+          'margin-left': '0px'
+        }, 300);
+
+        $('.new-event-form-container').animate({
+          'right': '-320px'
+        }, 300);
+
+        // If cancelled or closed after submission, clear field values
+        $scope.newEventOccasion = "";
+        $scope.newEventInvitedCount = 0;
+        $scope.newEventButtonText = "NEW EVENT";
+      }
+    };
+
+    $scope.createNewEvent = function() {
+      var newEvent = {
+        occasion: $scope.newEventOccasion,
+        invited_count: $scope.newEventInvitedCount,
+        day: $scope.newEventDate.getDate(),
+        month: $scope.newEventDate.getMonth(),
+        year: $scope.newEventDate.getFullYear(),
+        cancelled: false
+      };
+
+      $scope.events.$add(newEvent);
+      $scope.toggleEventForm();
+
+    };
+
+    // $('.submit').click(function() {
+    //   var event = {
+    //     occasion: $scope.newEventOccasion,
+    //     invited_count: $scope.newEventInvitedCount,
+    //     date: $scope.newEventDate
+    //   };
+    //   console.log(event);
+    // });
 
     // var underlineDatesWithEvents = function() {
     //   var testDate = ['19', '7', '2015'];

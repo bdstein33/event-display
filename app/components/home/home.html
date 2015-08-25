@@ -25,7 +25,7 @@
     <div class="top-bar-link cancelled left" ng-click="updateList('cancelled')">
       Cancelled
     </div>
-    <div class="new-event-button right">NEW EVENT</div>
+    <div class="new-event-button right" ng-click="toggleEventForm()">{{newEventButtonText}}</div>
   </div>
   <div class="event-container">
     <div ng-repeat="event in events | orderBy : dataSort[activeTab].order | filter: dataSort[activeTab].filter | filter: dateFilter" class="event">
@@ -48,6 +48,24 @@
     </div>
   </div>
 </div>
+<div class="new-event-form-container">
+  <form class="new-event-form">
+    <h2 class="new-event-form-header">New Event Form</h2>
+
+    <p class="input-label occasion-input">Occassion</p>
+    <input ng-model="newEventOccasion" type="text" placeholder="Enter occasion" />
+    <p class="input-label new-event-invited-count">Invite Count</p>
+    <input ng-model="newEventInvitedCount" type="number" placeholder="0"/>
+    <p class="input-label">Date</p>
+    <input class="input-label new-event-date" type="date"/>
+    <input class="submit" type="submit" ng-click="createNewEvent()">
+  </form>
+  <div id="new-event-calendar"></div>
+
+
+</div>
+
+
 
 
 
