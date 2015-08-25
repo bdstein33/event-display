@@ -1,0 +1,176 @@
+/* SHARED */
+* {
+  font-family: 'Lato';
+  font-weight: 300;
+  margin: 0;
+  color: #2a2d33;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-width: 950px;
+
+}
+
+/* LEFT SECTION */
+.left-container {
+  width: 320px;
+  height: 100%;
+  float: left;
+  background-color: #46529d;
+  position: fixed;
+}
+
+/*.left-container-top {
+  width: 100%;
+  height: 65px;
+  background-color: #2ebaee;
+  margin-bottom: 20px;
+}*/
+
+.header {
+  font-weight: 400;
+  margin-left: 40px;
+}
+
+.left-week-day {
+  margin-top: 20px;
+  color: #8d93be;
+}
+
+.left-month-day {
+  color: white;
+}
+
+/* MAIN CONTAINER*/
+
+.main-container {
+  overflow-x: hidden;
+  height: 100%;
+  margin-left: 320px;
+  background-color: #f7f7f7
+}
+
+/* TOP BAR */
+
+.top-bar {
+  height: 64px;
+  width: 100%;
+  background-color: #efeeec;
+  border-bottom: 1px solid #d8d8d7;
+  overflow: none;
+}
+
+.top-bar-link {
+  margin-left: 40px;
+  height: 63px;
+  width: 75px;
+  line-height: 74px;
+  color: #9b9997;
+  font-weight: 400;
+  text-align: center;
+}
+
+.new-event-button {
+  background-color: #2ebaee;
+  width: 150px;
+  height: 65px;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  line-height: 65px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.active, .top-bar-link:hover {
+  border-bottom: 2px solid #5b6ee0;
+  cursor: pointer;
+}
+
+/* EVENTS */
+
+.event-container {
+  width: 100%;
+  height: 100%;
+}
+
+.event {
+  width: 100%;
+  height: 100px;
+  float: left;
+  background-color: white;
+  border-bottom: 1px solid #d8d8d7;
+}
+
+.event-date-div {
+  width: 70px;
+  height: 100%;
+  padding-top: 10px;
+  float: left;
+}
+
+.event-month-box {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #9B9B9B;
+  border-radius: 5px;
+  text-align: center;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.event-month {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #9B9B9B;
+}
+
+.event-day {
+  color: #9B9B9B;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.event-year {
+  text-align: center;
+  font-size: 14px;
+  color: #9B9B9B;
+}
+
+.event-content {
+  height: 100%;
+  overflow: hidden;
+  padding-top: 8px;
+}
+
+.event-occasion {
+  font-size: 26px;
+  color: #40435b;
+}
+
+/* SCREEN SIZES <= 786px */
+@media screen and (max-width: 1024px){
+}
+
+/* SCREEN SIZES <= 786px */
+@media screen and (max-width: 786px){
+
+}
+
+
+/* SCREEN SIZES <= 400px */
+@media screen and (max-width: 401px){
+
+}
+

@@ -1,0 +1,46 @@
+<div class="left-container">
+<!--   <div class="left-container-top">
+    
+  </div> -->
+  <h1 class="header left-week-day">{{days[date.getDay()]}}</h1>
+  <h1 class="header left-month-day">{{date.getDate()}} {{months[date.getMonth()]}}</h1>
+  <div id="datepicker"></div>
+</div>
+<div class="main-container">
+  <div class="top-bar">
+    <div class="top-bar-link left active" ng-click="updateList('upcoming')">
+      Upcoming
+    </div>
+    <div class="top-bar-link left" ng-click="updateList('popular')">
+      Popular
+    </div>
+    <div class="top-bar-link left" ng-click="updateList('completed')">
+      Completed
+    </div>
+    <div class="top-bar-link left" ng-click="updateList('cancelled')">
+      Cancelled
+    </div>
+    <div class="new-event-button right">NEW EVENT</div>
+  </div>
+  <div class="event-container">
+    <div ng-repeat="event in events | orderBy : dataSort[activeTab].order | filter: dataSort[activeTab].filter" class="event">
+      <div class="event-date-div">
+        <div class="event-month-box">
+          <p class="event-month">{{months[event.month]}}</p>
+          <p class="event-day">{{("0" + event.day).slice(-2)}}</p>
+        </div>
+        <p class="event-year">{{event.year}}</p>
+      </div>
+      <div class="event-content">
+        <p class="event-occasion">{{displayOccasion(event.occasion)}}</p>
+        <p>{{event.invited_count}} People Invited</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
