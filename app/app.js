@@ -7,16 +7,12 @@
     // Componenets
     'homeController',
 
-    // 'landingController',
-    // 'loginController',
-
     // Shared
     'firebaseRef',
     'eventFactory',
     'eventDirective'
   ])
-  .config(config)
-  .run(run);
+  .config(config);
 
   config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
 
@@ -43,21 +39,5 @@
           }
         }
       });
-  }
-
-  function run($rootScope, $state, $location) {
-    // var email = prompt("What's your email?");
-    // window.Intercom('boot', {
-    //    app_id: 'yb37ygtj',
-    //    email: email,
-    //    user_id: email,
-    //    created_at: new Date(),
-    //    widget: {
-    //       activator: '#IntercomDefaultWidget'
-    //    }  
-    // });
-
-    // window.Intercom('update');
-    
   }
 })();
