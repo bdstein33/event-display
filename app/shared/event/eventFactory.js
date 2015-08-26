@@ -4,12 +4,11 @@
     var events = $firebaseArray(firebaseRef.child('events'));
 
     return {
+      // Returns all events which have already been fetched from Firebase
       getEvents: function() {
         return events;
       },
-      addEvent: function() {
-
-      },
+      // Updates an event based on the id contained within the eventData object
       updateEvent: function(eventData) {
         // Get event from Firebase based on event id
         var eventObj =  $firebaseObject(firebaseRef.child('events').child(eventData.$id));

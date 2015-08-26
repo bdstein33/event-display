@@ -1,21 +1,18 @@
 (function() {
-  angular.module('intercom', [
+  angular.module('eventapp', [
     // Angular libaries
     'ui.router',
     'firebase',
 
-    // Componenets
+    // Components
     'homeController',
 
     // Shared
     'firebaseRef',
-    'eventFactory',
-    'eventDirective'
+    'eventFactory'
   ])
   .config(config);
-
   config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
-
 
   function config($stateProvider, $urlRouterProvider, $locationProvider, $state) {
 
@@ -32,6 +29,7 @@
           }
         },
         resolve: {
+          // Collect event from eventFactory and pass in to homeController as an argument
           eventData: function($rootScope, $q, eventFactory) {
             var deferred = $q.defer();
             deferred.resolve(eventFactory.getEvents());
