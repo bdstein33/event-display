@@ -23,13 +23,6 @@ html, body {
   position: fixed;
 }
 
-/*.left-container-top {
-  width: 100%;
-  height: 65px;
-  background-color: #2ebaee;
-  margin-bottom: 20px;
-}*/
-
 .header {
   font-weight: 400;
   margin-left: 30px;
@@ -68,7 +61,6 @@ html, body {
   font-weight: 400px;
   margin-top: 3px;
 }
-
 
 
 /* MAIN CONTAINER*/
@@ -218,6 +210,8 @@ html, body {
   background-color: #6BD2A4;
 }
 
+/* NEW EVENT */
+
 .new-event-form-container {
   width: 320px;
   height: 100%;
@@ -226,8 +220,6 @@ html, body {
   top: 0;
   background-color: #46529d;
 }
-
-
 
 .new-event-form-header {
   color: #8d93be;
@@ -313,6 +305,8 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+/* INFORMATIONAL POP UPS */
 
 .popup1-container {
   position: fixed;
